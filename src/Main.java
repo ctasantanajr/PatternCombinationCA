@@ -25,30 +25,38 @@ public class Main {
 		CountryDAO db = new MySQLCountryDAO();
 
 		// GETTING ALL OF THE COUNTRYS IN THE DATABASE
-		ArrayList<Country> countries = db.getCountries();
+		//ArrayList<Country> countries = db.getCountries();
 
 		// PRINTING THEM TO THE CONSOLE
-		/*for (Country c : countries) {
-			System.out.println(c);
-		}*/
+		/*
+		 * for (Country c : countries) { System.out.println(c); }
+		 */
 
 		// GETTING ONLY THE COUNTRY THAT HAS THE GIVEN
 		// ID
-		//Country c = db.findCountryByCode("BHS");
+		// Country c = db.findCountryByCode("BHS");
 
 		// PRINTING IT TO THE CONSOLE
-		//System.out.println(c);
+		// System.out.println(c);
+
+		// GETTING ONLY THE COUNTRY THAT HAS THE GIVEN
+		// NAME
+		ArrayList<Country> countries = db.findCountryByName("Test");
+
+		// PRINTING IT TO THE CONSOLE
+		for (Country c : countries) { System.out.println(c); }
 
 		// CREATING A NEW COUNTRY. KEEP IN MIND THAT
 		// THE ID OF THE NEW COUNTRY IS GOING TO BE THE
 		// SIZE OF THE ARRAY PLUS ONE
-		Country newCountry = new Country("TXT", "Test", Continent.EUROPE, (float) 12345.87, "Heaven");
+		// Country newCountry = new Country("TXT", "Test", Continent.EUROPE, (float)
+		// 12345.87, "Heaven");
 
 		// ADDING THE COUNTRY TO THE ARRAY, TO HAVE LOCAL
 		// CONTROL OF THE DATA
-		countries.add(newCountry);
+		// countries.add(newCountry);
 		// ADDING THE NEW COUNTRY INTO THE DATABASE
-		System.out.println(db.saveCountry(newCountry));
+		// System.out.println(db.saveCountry(newCountry));
 
 	}
 

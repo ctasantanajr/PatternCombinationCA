@@ -69,7 +69,7 @@ public class MySQLCountryDAO implements CountryDAO {
 		ResultSet rs = db.select(query);
 
 		// WITH THE RESULT GET THE DATA AND PUT IT IN THE INSTANCE
-		// OF CUSTOMER
+		// OF COUNTRY
 		try {
 			rs.next();
 			String name = rs.getString(2);
@@ -87,14 +87,49 @@ public class MySQLCountryDAO implements CountryDAO {
 			e.printStackTrace();
 		}
 
-		// RETURN THE CUSTOMER
+		// RETURN THE COUNTRY
 		return c;
 	}
 
 	@Override
-	public Country findCountryByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Country> findCountryByName(String name) {
+		// CREATING THE LIST THAT WE'RE GOING TO RETURN
+		ArrayList<Country> countries = new ArrayList<Country>();
+
+		// THIS METHOD IS IN CHAGE OF CREATING THE QUERY
+		String query = "select * FROM country WHERE Name ='" + name + "'";
+
+		// ACCESSING THE DATABASE
+		DataSource db = new DataSource();
+
+		// QUERYING THE DATABASE
+		ResultSet rs = db.select(query);
+
+		// WITH THE RESULT GET THE DATA AND PUT IT IN THE INSTANCE
+		// OF COUNTRY
+		// LOOP OVER THE RESULT SET
+		try {
+			while (rs.next()) {
+				// FOR EACH ONE OF THE VALUES, WE WANT TO
+				// GET THE ATTRIBTUES
+				String code = rs.getString(1);
+				Continent continent = Continent.getContinent(rs.getString(3));
+				float surfaceArea = rs.getFloat(4);
+				String headOfState = rs.getString(5);
+
+				countries.add(new Country(code, name, continent, surfaceArea, headOfState));
+			}
+
+			// CLOSING THE CONNECTION TO THE DATABASE
+			db.closing();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// RETURN THE ARRAYLIST WITH ALL THE COUNTRIES
+		return countries;
 	}
 
 	@Override
