@@ -35,7 +35,7 @@ public class MySQLCountryDAO implements CountryDAO {
 				// GET THE ATTRIBTUES
 				String code = rs.getString(1);
 				String name = rs.getString(2);
-				Continent continent = Continent.valueOf(rs.getString(3));
+				Continent continent = Continent.getContinent(rs.getString(3));
 				float surfaceArea = rs.getFloat(4);
 				String headOfState = rs.getString(5);
 
