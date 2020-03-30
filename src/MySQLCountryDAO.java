@@ -60,7 +60,7 @@ public class MySQLCountryDAO implements CountryDAO {
 		Country c = null;
 
 		// THIS METHOD IS IN CHAGE OF CREATING THE QUERY
-		String query = "select * from country where id = " + code;
+		String query = "select * FROM country WHERE Code ='" + code + "'";
 
 		// ACCESSING THE DATABASE
 		DataSource db = new DataSource();
@@ -73,7 +73,7 @@ public class MySQLCountryDAO implements CountryDAO {
 		try {
 			rs.next();
 			String name = rs.getString(2);
-			Continent continent = Continent.valueOf(rs.getString(3));
+			Continent continent = Continent.getContinent(rs.getString(3));
 			float surfaceArea = rs.getFloat(4);
 			String headOfState = rs.getString(5);
 
