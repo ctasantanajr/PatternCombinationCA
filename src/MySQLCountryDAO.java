@@ -104,6 +104,7 @@ public class MySQLCountryDAO implements CountryDAO {
 
 		// QUERYING THE DATABASE
 		ResultSet rs = db.select(query);
+		
 
 		// WITH THE RESULT GET THE DATA AND PUT IT IN THE INSTANCE
 		// OF COUNTRY
