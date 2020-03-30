@@ -111,7 +111,7 @@ public class MySQLCountryDAO implements CountryDAO {
 
 		// THIS METHOD IS IN CHARGE OF CREATING THE QUERY
 		String query = "insert into country (Code, Name, Continent, SurfaceArea, HeadOfState) values ('" + code + "', '"
-				+ name + "', '" + continent + "', " + surfaceArea + ", '" + headOfState + "')";
+				+ name + "', '" + continent.name() + "', " + surfaceArea + ", '" + headOfState + "')";
 
 		// REQUESTION TO SAVE THE DATA
 		boolean result = db.save(query);
