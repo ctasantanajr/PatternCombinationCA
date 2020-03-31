@@ -10,11 +10,11 @@ public class Country {
 
 	private String code;
 	private String name;
-	private Continent continent;
+	private String continent;
 	private float surfaceArea;
 	private String headOfState;
 
-	public Country(String code, String name, Continent continent, float surfaceArea, String headOfState) {
+	public Country(String code, String name, String continent, float surfaceArea, String headOfState) {
 		this.code = code;
 		this.name = name;
 		this.continent = continent;
@@ -38,11 +38,11 @@ public class Country {
 		this.name = name;
 	}
 
-	public Continent getContinent() {
+	public String getContinent() {
 		return continent;
 	}
 
-	public void setContinent(Continent continent) {
+	public void setContinent(String continent) {
 		this.continent = continent;
 	}
 

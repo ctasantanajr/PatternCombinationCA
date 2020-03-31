@@ -35,11 +35,12 @@ public class MySQLCountryDAO implements CountryDAO {
 				// GET THE ATTRIBTUES
 				String code = rs.getString(1);
 				String name = rs.getString(2);
+				//String continent = rs.getString(3);
 				Continent continent = Continent.getContinent(rs.getString(3));
 				float surfaceArea = rs.getFloat(4);
 				String headOfState = rs.getString(5);
 
-				countries.add(new Country(code, name, continent, surfaceArea, headOfState));
+				countries.add(new Country(code, name, continent.getName(), surfaceArea, headOfState));
 			}
 
 			// CLOSING THE CONNECTION TO THE DATABASE
@@ -73,11 +74,12 @@ public class MySQLCountryDAO implements CountryDAO {
 		try {
 			rs.next();
 			String name = rs.getString(2);
+			//String continent = rs.getString(3);
 			Continent continent = Continent.getContinent(rs.getString(3));
 			float surfaceArea = rs.getFloat(4);
 			String headOfState = rs.getString(5);
 
-			c = new Country(code, name, continent, surfaceArea, headOfState);
+			c = new Country(code, name, continent.getName(), surfaceArea, headOfState);
 
 			// CLOSING THE CONNECTION TO THE DATABASE
 			db.closing();
@@ -114,11 +116,12 @@ public class MySQLCountryDAO implements CountryDAO {
 				// FOR EACH ONE OF THE VALUES, WE WANT TO
 				// GET THE ATTRIBTUES
 				String code = rs.getString(1);
+				//String continent = rs.getString(3);
 				Continent continent = Continent.getContinent(rs.getString(3));
 				float surfaceArea = rs.getFloat(4);
 				String headOfState = rs.getString(5);
 
-				countries.add(new Country(code, name, continent, surfaceArea, headOfState));
+				countries.add(new Country(code, name, continent.getName(), surfaceArea, headOfState));
 			}
 
 			// CLOSING THE CONNECTION TO THE DATABASE
@@ -141,13 +144,13 @@ public class MySQLCountryDAO implements CountryDAO {
 		// FROM THE OBJECT, GETTING THE DATA
 		String code = country.getCode();
 		String name = country.getName();
-		Continent continent = country.getContinent();
+		String continent = country.getContinent();
 		float surfaceArea = country.getSurfaceArea();
 		String headOfState = country.getHeadOfState();
 
 		// THIS METHOD IS IN CHARGE OF CREATING THE QUERY
 		String query = "insert into country (Code, Name, Continent, SurfaceArea, HeadOfState) values ('" + code + "', '"
-				+ name + "', '" + continent.name() + "', " + surfaceArea + ", '" + headOfState + "')";
+				+ name + "', '" + continent + "', " + surfaceArea + ", '" + headOfState + "')";
 
 		// REQUESTION TO SAVE THE DATA
 		boolean result = db.save(query);
