@@ -23,7 +23,7 @@ public class MySQLCountryDAO implements CountryDAO {
 		String query = "select * from country";
 
 		// ACCESSING THE DATABASE
-		DataSource db = new DataSource();
+		DataSource db = DataSource.getInstance();
 
 		// QUERYING THE DATABASE
 		ResultSet rs = db.select(query);
@@ -35,12 +35,12 @@ public class MySQLCountryDAO implements CountryDAO {
 				// GET THE ATTRIBTUES
 				String code = rs.getString(1);
 				String name = rs.getString(2);
-				//String continent = rs.getString(3);
-				Continent continent = Continent.getContinent(rs.getString(3));
+				String continent = rs.getString(3);
+				//Continent continent = Continent.getContinent(rs.getString(3));
 				float surfaceArea = rs.getFloat(4);
 				String headOfState = rs.getString(5);
 
-				countries.add(new Country(code, name, continent.getName(), surfaceArea, headOfState));
+				countries.add(new Country(code, name, continent, surfaceArea, headOfState));
 			}
 
 			// CLOSING THE CONNECTION TO THE DATABASE
@@ -64,7 +64,7 @@ public class MySQLCountryDAO implements CountryDAO {
 		String query = "select * FROM country WHERE Code ='" + code + "'";
 
 		// ACCESSING THE DATABASE
-		DataSource db = new DataSource();
+		DataSource db = DataSource.getInstance();
 
 		// QUERYING THE DATABASE
 		ResultSet rs = db.select(query);
@@ -74,12 +74,12 @@ public class MySQLCountryDAO implements CountryDAO {
 		try {
 			rs.next();
 			String name = rs.getString(2);
-			//String continent = rs.getString(3);
-			Continent continent = Continent.getContinent(rs.getString(3));
+			String continent = rs.getString(3);
+			//Continent continent = Continent.getContinent(rs.getString(3));
 			float surfaceArea = rs.getFloat(4);
 			String headOfState = rs.getString(5);
 
-			c = new Country(code, name, continent.getName(), surfaceArea, headOfState);
+			c = new Country(code, name, continent, surfaceArea, headOfState);
 
 			// CLOSING THE CONNECTION TO THE DATABASE
 			db.closing();
@@ -102,7 +102,7 @@ public class MySQLCountryDAO implements CountryDAO {
 		String query = "select * FROM country WHERE Name ='" + name + "'";
 
 		// ACCESSING THE DATABASE
-		DataSource db = new DataSource();
+		DataSource db = DataSource.getInstance();
 
 		// QUERYING THE DATABASE
 		ResultSet rs = db.select(query);
@@ -116,12 +116,12 @@ public class MySQLCountryDAO implements CountryDAO {
 				// FOR EACH ONE OF THE VALUES, WE WANT TO
 				// GET THE ATTRIBTUES
 				String code = rs.getString(1);
-				//String continent = rs.getString(3);
-				Continent continent = Continent.getContinent(rs.getString(3));
+				String continent = rs.getString(3);
+				//Continent continent = Continent.getContinent(rs.getString(3));
 				float surfaceArea = rs.getFloat(4);
 				String headOfState = rs.getString(5);
 
-				countries.add(new Country(code, name, continent.getName(), surfaceArea, headOfState));
+				countries.add(new Country(code, name, continent, surfaceArea, headOfState));
 			}
 
 			// CLOSING THE CONNECTION TO THE DATABASE
@@ -139,7 +139,7 @@ public class MySQLCountryDAO implements CountryDAO {
 	@Override
 	public boolean saveCountry(Country country) {
 		// ACCESSING THE DATABASE
-		DataSource db = new DataSource();
+		DataSource db = DataSource.getInstance();
 
 		// FROM THE OBJECT, GETTING THE DATA
 		String code = country.getCode();
