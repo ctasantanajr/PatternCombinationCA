@@ -25,7 +25,7 @@ public class MySQLCountryDAO implements CountryDAO {
 		String query = "select * from country";
 
 		// ACCESSING THE DATABASE
-		DataSource db = DataSource.getInstance();
+		DataSourceSingleton db = DataSourceSingleton.getInstance();
 
 		// QUERYING THE DATABASE
 		ResultSet rs = db.select(query);
@@ -70,7 +70,7 @@ public class MySQLCountryDAO implements CountryDAO {
 		String query = "select * FROM country WHERE Code ='" + code + "'";
 
 		// ACCESSING THE DATABASE
-		DataSource db = DataSource.getInstance();
+		DataSourceSingleton db = DataSourceSingleton.getInstance();
 
 		// QUERYING THE DATABASE
 		ResultSet rs = db.select(query);
@@ -112,7 +112,7 @@ public class MySQLCountryDAO implements CountryDAO {
 		String query = "select * FROM country WHERE Name ='" + name + "'";
 
 		// ACCESSING THE DATABASE
-		DataSource db = DataSource.getInstance();
+		DataSourceSingleton db = DataSourceSingleton.getInstance();
 
 		// QUERYING THE DATABASE
 		ResultSet rs = db.select(query);
@@ -153,7 +153,7 @@ public class MySQLCountryDAO implements CountryDAO {
 	@Override
 	public boolean saveCountry(Country country) {
 		// ACCESSING THE DATABASE
-		DataSource db = DataSource.getInstance();
+		DataSourceSingleton db = DataSourceSingleton.getInstance();
 
 		// FROM THE OBJECT, GETTING THE DATA
 		String code = country.getCode();
@@ -179,7 +179,7 @@ public class MySQLCountryDAO implements CountryDAO {
 	public void CloseDatabase() {
 		// TODO Auto-generated method stub
 		// CLOSING THE DATABASE
-		DataSource db = DataSource.getInstance();
+		DataSourceSingleton db = DataSourceSingleton.getInstance();
 		db.closing();
 
 	}

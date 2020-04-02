@@ -9,7 +9,7 @@ import java.sql.Statement;
  *
  */
 
-public class DataSource {
+public class DataSourceSingleton {
 
 	// THIS PART OF THE CODE REMAINS THE SAME
 	private String db = "jdbc:mysql://52.50.23.197:3306/world";
@@ -22,10 +22,10 @@ public class DataSource {
 	private Statement stmt;
 
 	// Eager instantiation
-	private static DataSource instance = new DataSource();
+	private static DataSourceSingleton instance = new DataSourceSingleton();
 
 	// constructor using Singleton Pattern
-	private DataSource() {
+	private DataSourceSingleton() {
 
 		// NOW THE CONSTRUCTOR ONLY HAS TO CREATE THE CONNECTION
 		// AND THE STATEMENT
@@ -104,7 +104,7 @@ public class DataSource {
 	}
 
 	// Singleton getter!!!
-	public static DataSource getInstance() {
+	public static DataSourceSingleton getInstance() {
 		return instance;
 	}
 

@@ -317,7 +317,7 @@ public class Main {
 		System.out.println("Enter a head of state: ");
 		String state = sc.next();
 
-		System.out.println(code+name+continent.getName()+area+state);
+		//System.out.println(code+name+continent.getName()+area+state);
 
 		// CREATING A NEW COUNTRY
 		Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent.getName(), area, state);
