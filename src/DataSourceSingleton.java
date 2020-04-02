@@ -11,24 +11,23 @@ import java.sql.Statement;
 
 public class DataSourceSingleton {
 
-	// THIS PART OF THE CODE REMAINS THE SAME
+	// THIS PART OF THE CODE CREATES THE CONNECTION WITH THE DATABASE
+	// INFORMING THE HOSTNAME, PORT, DATABASE, USER AND PASSWORD
 	private String db = "jdbc:mysql://52.50.23.197:3306/world";
 	private String un = "cctstudent";
 	private String pw = "Pass1234!";
 
-	// NOW I'M MAKING THIS GUYS GLOBAL, TO BE ABLE TO ACCESS THEM
-	// FROM ANY OF THE METHODS
+	// THIS VARIABLES ARE GLOBAL, TO BE ACCESSED FROM ANY OF THE METHODS
 	private Connection conn;
 	private Statement stmt;
 
-	// Eager instantiation
+	// Private Static instance of this class - FOLLOWING SINGLETON PATTERN
 	private static DataSourceSingleton instance = new DataSourceSingleton();
 
-	// constructor using Singleton Pattern
+	// CONSTRUCTOR USING SINGLETON PATTERN
 	private DataSourceSingleton() {
 
-		// NOW THE CONSTRUCTOR ONLY HAS TO CREATE THE CONNECTION
-		// AND THE STATEMENT
+		// THIS CONSTRUCTOR HAS TO CREATE ONLY THE CONNECTION AND THE STATEMENT
 		try {
 
 			// Get a connection to the database
@@ -53,8 +52,8 @@ public class DataSourceSingleton {
 		}
 	}
 
-	// THIS IS GOING TO BE A GENERIC METHOD TO DO
-	// ANY SELECT STATEMENT THAT WE PASS IN USING THE
+	// THIS IS A GENERIC METHOD. IT MEANS, ANY SELECT STATEMENT
+	// THAT WE PASS WILL USE THE
 	// QUERY VARIABLE
 	public ResultSet select(String query) {
 		// Execute the query
@@ -69,28 +68,26 @@ public class DataSourceSingleton {
 		return rs;
 	}
 
-	// THIS IS GOING TO BE A GENERIC METHOD TO DO
-	// ANY INSERT STATEMENT THAT WE PASS IN USING THE
+	// THIS IS A GENERIC METHOD. IT MEANS, ANY SELECT STATEMENT
+	// THAT WE PASS WILL USE THE
 	// QUERY VARIABLE
 	public boolean save(String query) {
 
 		try {
 
-			// NOTE THAT HERE WE WON'T NEED
-			// ANY RESULT SET, AS AN INSERT STATEMENT
-			// DOES NOT RETURN VALUES
+			// AS AN INSERT STATEMENT DOES NOT RETURN VALUES, 
+			// THERE IS NO NEED OF A RESULT SET
 			stmt.execute(query);
 			return true;
 		} catch (SQLException e) {
 
-			e.printStackTrace();
+			System.out.println("Error trying to save this register!");
 			return false;
 		}
 
 	}
 
-	// AND FINALLY WE HAVE A SEPARATE METHOD TO
-	// CLOSE THE STATEMENT AND THE CONNECTION
+	// THIS METHOD CLOSES THE STATEMENT AND THE CONNECTION
 	public void closing() {
 		try {
 			stmt.close();
@@ -103,7 +100,7 @@ public class DataSourceSingleton {
 
 	}
 
-	// Singleton getter!!!
+	// SINGLETON GETTER
 	public static DataSourceSingleton getInstance() {
 		return instance;
 	}

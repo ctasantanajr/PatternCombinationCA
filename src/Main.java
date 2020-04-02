@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 /**
  * 
  */
@@ -12,6 +11,7 @@ import java.util.Scanner;
  */
 public class Main {
 
+	// THIS VARIABLES ARE GLOBAL, TO BE ACCESSED FROM ANY OF THE METHODS
 	static Scanner sc = new Scanner(System.in);
 	static Boolean run = true;
 	static ArrayList<Country> countries = new ArrayList<Country>();
@@ -22,9 +22,10 @@ public class Main {
 
 		// NOW THE CLIENT DOES NOT ACCESS THE DATABASE CLASS DIRECTLY.
 		// THE CLIENT WILL ONLY TALK TO THE COUNTRYDAO AND ALL DATA IS GOING
-		// TO BE PASSED TROUGH COUNTRYS OBJECTS
+		// TO BE PASSED TROUGH COUNTRY OBJECTS
 		db = new MySQLCountryDAO();
 
+		// call the method that welcomes the user
 		Welcome();
 
 		// this while loop builds up the menu of the system, utilising the I/O class
@@ -97,6 +98,8 @@ public class Main {
 
 				answer = sc.next();
 
+				// THIS IF STATEMENT VALIDATES IF THE INPUT MADE BY THE USER IS NUMERIC
+				// AND A VALID OPTION
 				if (answer.matches("[0-9]+")) {
 					if (Integer.parseInt(answer) == 1 || Integer.parseInt(answer) == 2 || Integer.parseInt(answer) == 3
 							|| Integer.parseInt(answer) == 4 || Integer.parseInt(answer) == 5) {
@@ -155,7 +158,6 @@ public class Main {
 		countries = db.getCountries();
 
 		// PRINTING THEM TO THE CONSOLE
-
 		for (Country c : countries) {
 			System.out.println(c);
 		}
@@ -175,8 +177,10 @@ public class Main {
 		// GETTING ONLY THE COUNTRY THAT HAS THE GIVEN CODE
 		c = db.findCountryByCode(code);
 
-		// PRINTING IT TO THE CONSOLE
-		System.out.println(c);
+		if (c != null) {
+			// PRINTING IT TO THE CONSOLE IF FOUND A COUNTRY
+			System.out.println(c);
+		}
 
 	}
 
@@ -189,7 +193,7 @@ public class Main {
 		System.out.println("Please inform the name: ");
 		String name = sc.next();
 
-		// GETTING ONLY THE COUNTRY THAT HAS THE GIVEN NAME
+		// GETTING ALL THE COUNTRIES THAT HAVE THE GIVEN NAME
 		countries = db.findCountryByName(name);
 
 		// PRINTING IT TO THE CONSOLE
@@ -200,7 +204,7 @@ public class Main {
 	}
 
 	// --------------------------------------------------------------------
-	// METHOD TO VALIDATE A CODE ENTERED BY USER
+	// METHOD TO VALIDATE THE LENGTH OF A CODE ENTERED BY USER
 	// --------------------------------------------------------------------
 
 	private static String ValidateCode() {
@@ -226,13 +230,15 @@ public class Main {
 			System.out.println("Error reading input code");
 		}
 
+		// Using this method to converts all of the
+		// characters in this String to upper case
 		return code.toUpperCase();
 
 	}
 
-	// --------------------------------------------------------------------
-	// METHOD TO VALIDATE A CONTINENT ENTERED BY USER
-	// --------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	// METHOD TO MATCH A CONTINENT TO THE ENUM - VALIDATION
+	// ---------------------------------------------------------------------------
 
 	private static Continent ValidateContinent() {
 
@@ -246,6 +252,8 @@ public class Main {
 
 				String option = sc.next();
 
+				// THIS IF STATEMENT VALIDATES IF THE INPUT MADE BY THE USER IS NUMERIC
+				// AND A VALID OPTION
 				if (option.matches("[0-9]+")) {
 					if (Integer.parseInt(option) == 1 || Integer.parseInt(option) == 2 || Integer.parseInt(option) == 3
 							|| Integer.parseInt(option) == 4 || Integer.parseInt(option) == 5
@@ -309,7 +317,6 @@ public class Main {
 		System.out.println("Choose a Continent:\n 1-Asia \n 2-Europe \n 3-North America \n 4-Africa "
 				+ "\n 5-Oceania \n 6-Antarctica \n 7-South America");
 		Continent continent = ValidateContinent();
-		
 
 		System.out.println("Enter a surface area: ");
 		float area = sc.nextFloat();
@@ -317,26 +324,18 @@ public class Main {
 		System.out.println("Enter a head of state: ");
 		String state = sc.next();
 
-		//System.out.println(code+name+continent.getName()+area+state);
-
-		// CREATING A NEW COUNTRY
+		// CREATING A NEW OBJECT "COUNTRY" FOLLOWING THE BUILDER PATTERN
 		Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent.getName(), area, state);
-		Country newCountry = builder.build();
-		//Country newCountry = new Country(code, name, continent.getName(), area, state);
-		
 
 		// ADDING THE COUNTRY TO THE ARRAY, TO HAVE LOCAL
 		// CONTROL OF THE DATA
-		countries.add(newCountry);
-		
-		
+		countries.add(builder.build());
+
 		// ADDING THE NEW COUNTRY INTO THE DATABASE
-		boolean result = db.saveCountry(newCountry);
+		boolean result = db.saveCountry(builder.build());
 
 		if (result == true) {
 			System.out.println("Country added successfully!");
-		}else {
-			System.out.println("This code already exist. Please try again using a different code!");
 		}
 
 	}

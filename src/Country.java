@@ -14,7 +14,7 @@ public class Country {
 	private float surfaceArea;
 	private String headOfState;
 
-	// BUILDER CONSTRUCTOR
+	//CONSTRUCTOR - following Builder Pattern
 	private Country(CountryBuilder builder) {
 		this.code = builder.code;
 		this.name = builder.name;
@@ -23,13 +23,14 @@ public class Country {
 		this.headOfState = builder.headOfState;
 	}
 
-	// Specific implementation for Visa
+	//METHOD TO DISPLAY ALL PARAMETERS OF A COUNTRY
 	@Override
 	public String toString() {
 		return "Country [Code=" + code + ", Name=" + name + ", Continent=" + continent + ", Surface Area=" + surfaceArea
 				+ ", Head Of State=" + headOfState + "]";
 	}
 
+	//GETTERS
 	public String getCode() {
 		return code;
 	}
@@ -50,20 +51,8 @@ public class Country {
 		return headOfState;
 	}
 
-	/*
-	 * public void setCode(String code) { this.code = code; }
-	 * 
-	 * public void setName(String name) { this.name = name; }
-	 * 
-	 * public void setContinent(String continent) { this.continent = continent; }
-	 * 
-	 * public void setSurfaceArea(float surfaceArea) { this.surfaceArea =
-	 * surfaceArea; }
-	 * 
-	 * public void setHeadOfState(String headOfState) { this.headOfState =
-	 * headOfState; }
-	 */
 
+	//INNER CLASS - Static class builder
 	public static class CountryBuilder {
 
 		private String code;
@@ -80,31 +69,9 @@ public class Country {
 			this.headOfState = headOfState;
 		}
 
-		public CountryBuilder setCode(String code) {
-			this.code = code;
-			return this;
-		}
-
-		public CountryBuilder setName(String name) {
-			this.name = name;
-			return this;
-		}
-
-		public CountryBuilder setContinent(String continent) {
-			this.continent = continent;
-			return this;
-		}
-
-		public CountryBuilder setSurfaceArea(float surfaceArea) {
-			this.surfaceArea = surfaceArea;
-			return this;
-		}
-
-		public CountryBuilder setHeadOfState(String headOfState) {
-			this.headOfState = headOfState;
-			return this;
-		}
-
+	
+		// build method to deal with outer class 
+        // to return outer instance 
 		public Country build() {
 			return new Country(this);
 		}

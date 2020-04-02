@@ -11,20 +11,19 @@ import java.util.ArrayList;
  *
  */
 public class MySQLCountryDAO implements CountryDAO {
-	
-	
 
-	// METHOD 1: GET ALL COUNTRIES
+	// METHOD TO GET ALL COUNTRIES
 	@Override
 	public ArrayList<Country> getCountries() {
-		// CREATE THE ARRAYLIST TO PUT ALL THE COUNTRIES
-		// THAT ARE GOING TO BE RETURNED
+		// CREATE THE ARRAYLIST THAT RECEIVES ALL COUNTRIES TO BE RETURNED
 		ArrayList<Country> countries = new ArrayList<Country>();
 
-		// THIS IS THE METHOD IN CHARGE OF CREATE THE QUERY
+		// THIS VARIABLE STORAGES THE QUERY
 		String query = "select * from country";
 
-		// ACCESSING THE DATABASE
+		// ACCESSING THE DATABASE - USING SINGLETON PATTERN
+		// IN THIS CASE THERE IS NO NEED TO CREATE A NEW OBJECT, INSTEAD AN INSTANCE IS
+		// RETURNED.
 		DataSourceSingleton db = DataSourceSingleton.getInstance();
 
 		// QUERYING THE DATABASE
@@ -33,24 +32,23 @@ public class MySQLCountryDAO implements CountryDAO {
 		// LOOP OVER THE RESULT SET
 		try {
 			while (rs.next()) {
-				// FOR EACH ONE OF THE VALUES, WE WANT TO
-				// GET THE ATTRIBTUES
+				// GET THE VALUE FROM EACH ATTRIBUTE OF THE DATABASE
+				// PS. THE FIRST ATTRIBUTE ALWAYS STARTS FROM THE NUMBER 1.
 				String code = rs.getString(1);
 				String name = rs.getString(2);
 				String continent = rs.getString(3);
 				// Continent continent = Continent.getContinent(rs.getString(3));
 				float surfaceArea = rs.getFloat(4);
 				String headOfState = rs.getString(5);
-				
-				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent, surfaceArea, headOfState);
-				Country newCountry = builder.build();
-			
-				countries.add(newCountry);
-				//countries.add(new Country(code, name, continent, surfaceArea, headOfState));
+
+				// CREATING A NEW OBJECT "COUNTRY" FOLLOWING THE BUILDER PATTERN
+				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent, surfaceArea,
+						headOfState);
+				countries.add(builder.build());
+
 			}
 
-			// CLOSING THE CONNECTION TO THE DATABASE
-			//db.closing();
+			// db.closing();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -61,22 +59,26 @@ public class MySQLCountryDAO implements CountryDAO {
 		return countries;
 	}
 
+	// THIS METHOD IS CALLED TO FIND A COUNTRY BY ITS CODE
 	@Override
 	public Country findCountryByCode(String code) {
-		// CREATING THE OBJECT THAT WE'RE GOING TO RETURN
+		// CREATING THE OBJECT THAT IS GOING TO BE RETURNED
 		Country c = null;
 
-		// THIS METHOD IS IN CHAGE OF CREATING THE QUERY
+		// THIS VARIABLE STORAGES THE QUERY
 		String query = "select * FROM country WHERE Code ='" + code + "'";
 
-		// ACCESSING THE DATABASE
+		// ACCESSING THE DATABASE - USING SINGLETON PATTERN
+		// IN THIS CASE THERE IS NO NEED TO CREATE A NEW OBJECT, INSTEAD AN INSTANCE IS
+		// RETURNED.
 		DataSourceSingleton db = DataSourceSingleton.getInstance();
 
 		// QUERYING THE DATABASE
 		ResultSet rs = db.select(query);
 
-		// WITH THE RESULT GET THE DATA AND PUT IT IN THE INSTANCE
-		// OF COUNTRY
+		// GET THE VALUE FROM EACH ATTRIBUTE OF THE DATABASE
+		// PS. THE FIRST ATTRIBUTE IS CODE (NUMBER 1) SO THE FOLLOWING ONE SHOULD STARTS
+		// NUMBER 2.
 		try {
 			rs.next();
 			String name = rs.getString(2);
@@ -85,61 +87,62 @@ public class MySQLCountryDAO implements CountryDAO {
 			float surfaceArea = rs.getFloat(4);
 			String headOfState = rs.getString(5);
 
-			Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent, surfaceArea, headOfState);
-			Country newCountry = builder.build();
-			c = newCountry;
-			
-			//c = new Country(code, name, continent, surfaceArea, headOfState);
+			// CREATING A NEW OBJECT "COUNTRY" FOLLOWING THE BUILDER PATTERN
+			Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent, surfaceArea,
+					headOfState);
+			c = builder.build();
 
-			// CLOSING THE CONNECTION TO THE DATABASE
-			//db.closing();
+			// db.closing();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Country not found!");
 		}
 
-		// RETURN THE COUNTRY
+		// RETURN THE COUNTRY FOUND
 		return c;
 	}
 
+	// THIS METHOD FIND A COUNTRY BY ITS NAME
 	@Override
 	public ArrayList<Country> findCountryByName(String name) {
-		// CREATING THE LIST THAT WE'RE GOING TO RETURN
+		// IN CASE OF HAVING MORE THAN ONE COUNTRY WITH THE SAME NAME IN THE DATABASE,
+		// THIS ARRAYLIST WAS CREATED.
+		// PS. THE DATABASE DOES NOT CONSISTS COUNTRY'S NAME, THAT IS WHY.
 		ArrayList<Country> countries = new ArrayList<Country>();
 
-		// THIS METHOD IS IN CHAGE OF CREATING THE QUERY
+		// THIS VARIABLE STORAGES THE QUERY
 		String query = "select * FROM country WHERE Name ='" + name + "'";
 
-		// ACCESSING THE DATABASE
+		// ACCESSING THE DATABASE - USING SINGLETON PATTERN
+		// IN THIS CASE THERE IS NO NEED TO CREATE A NEW OBJECT, INSTEAD AN INSTANCE IS
+		// RETURNED.
 		DataSourceSingleton db = DataSourceSingleton.getInstance();
 
 		// QUERYING THE DATABASE
 		ResultSet rs = db.select(query);
 
-		// WITH THE RESULT GET THE DATA AND PUT IT IN THE INSTANCE
-		// OF COUNTRY
-		// LOOP OVER THE RESULT SET
+		// LOOP OVER THE RESULT SET, GETTING THE RESULT FROM THE DATABASE
+		// AND SETTING IN THE INSTANCE OF COUNTRY
 		try {
 			while (rs.next()) {
-				// FOR EACH ONE OF THE VALUES, WE WANT TO
-				// GET THE ATTRIBTUES
+				// GET THE VALUE FROM EACH ATTRIBUTE OF THE DATABASE
+				// PS. NAME IS THE SECOND ATTRIBUTE IN THE DATABASE SO WE JUST NEED TO SET THE
+				// OTHERS
 				String code = rs.getString(1);
 				String continent = rs.getString(3);
 				// Continent continent = Continent.getContinent(rs.getString(3));
 				float surfaceArea = rs.getFloat(4);
 				String headOfState = rs.getString(5);
-				
-				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent, surfaceArea, headOfState);
-				Country newCountry = builder.build();
-				
-				countries.add(newCountry);
 
-				//countries.add(new Country(code, name, continent, surfaceArea, headOfState));
+				// CREATING A NEW OBJECT "COUNTRY" FOLLOWING THE BUILDER PATTERN
+				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent, surfaceArea,
+						headOfState);
+				countries.add(builder.build());
+
 			}
 
-			// CLOSING THE CONNECTION TO THE DATABASE
-			//db.closing();
+			// db.closing();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -150,9 +153,13 @@ public class MySQLCountryDAO implements CountryDAO {
 		return countries;
 	}
 
+	// THIS METHOD ADD A NEW COUNTRY TO THE DATABASE
 	@Override
 	public boolean saveCountry(Country country) {
-		// ACCESSING THE DATABASE
+
+		// ACCESSING THE DATABASE - USING SINGLETON PATTERN
+		// IN THIS CASE THERE IS NO NEED TO CREATE A NEW OBJECT, INSTEAD AN INSTANCE IS
+		// RETURNED.
 		DataSourceSingleton db = DataSourceSingleton.getInstance();
 
 		// FROM THE OBJECT, GETTING THE DATA
@@ -162,24 +169,29 @@ public class MySQLCountryDAO implements CountryDAO {
 		float surfaceArea = country.getSurfaceArea();
 		String headOfState = country.getHeadOfState();
 
-		// THIS METHOD IS IN CHARGE OF CREATING THE QUERY
+		// THIS VARIABLE STORAGES THE QUERY
 		String query = "insert into country (Code, Name, Continent, SurfaceArea, HeadOfState) values ('" + code + "', '"
 				+ name + "', '" + continent + "', " + surfaceArea + ", '" + headOfState + "')";
 
 		// REQUESTION TO SAVE THE DATA
 		boolean result = db.save(query);
 
-		// CLOSING THE DATABASE
-		//db.closing();
+		// db.closing();
 
 		return result;
 	}
 
+	// THIS METHOD CLOSES THE INSTANCE OF THE DATABASE THAT WAS CREATED WHEN
+	// THE USER ENDS THE APLICATION
 	@Override
 	public void CloseDatabase() {
 		// TODO Auto-generated method stub
-		// CLOSING THE DATABASE
+
+		// ACCESSING THE DATABASE - USING SINGLETON PATTERN
+		// IN THIS CASE THERE IS NO NEED TO CREATE A NEW OBJECT, INSTEAD AN INSTANCE IS
+		// RETURNED.
 		DataSourceSingleton db = DataSourceSingleton.getInstance();
+		// CLOSING THE DATABASE
 		db.closing();
 
 	}
