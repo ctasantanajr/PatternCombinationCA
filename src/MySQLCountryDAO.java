@@ -11,6 +11,8 @@ import java.util.ArrayList;
  *
  */
 public class MySQLCountryDAO implements CountryDAO {
+	
+	
 
 	// METHOD 1: GET ALL COUNTRIES
 	@Override
@@ -36,15 +38,19 @@ public class MySQLCountryDAO implements CountryDAO {
 				String code = rs.getString(1);
 				String name = rs.getString(2);
 				String continent = rs.getString(3);
-				//Continent continent = Continent.getContinent(rs.getString(3));
+				// Continent continent = Continent.getContinent(rs.getString(3));
 				float surfaceArea = rs.getFloat(4);
 				String headOfState = rs.getString(5);
-
-				countries.add(new Country(code, name, continent, surfaceArea, headOfState));
+				
+				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent, surfaceArea, headOfState);
+				Country newCountry = builder.build();
+			
+				countries.add(newCountry);
+				//countries.add(new Country(code, name, continent, surfaceArea, headOfState));
 			}
 
 			// CLOSING THE CONNECTION TO THE DATABASE
-			db.closing();
+			//db.closing();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -75,14 +81,18 @@ public class MySQLCountryDAO implements CountryDAO {
 			rs.next();
 			String name = rs.getString(2);
 			String continent = rs.getString(3);
-			//Continent continent = Continent.getContinent(rs.getString(3));
+			// Continent continent = Continent.getContinent(rs.getString(3));
 			float surfaceArea = rs.getFloat(4);
 			String headOfState = rs.getString(5);
 
-			c = new Country(code, name, continent, surfaceArea, headOfState);
+			Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent, surfaceArea, headOfState);
+			Country newCountry = builder.build();
+			c = newCountry;
+			
+			//c = new Country(code, name, continent, surfaceArea, headOfState);
 
 			// CLOSING THE CONNECTION TO THE DATABASE
-			db.closing();
+			//db.closing();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -106,7 +116,6 @@ public class MySQLCountryDAO implements CountryDAO {
 
 		// QUERYING THE DATABASE
 		ResultSet rs = db.select(query);
-		
 
 		// WITH THE RESULT GET THE DATA AND PUT IT IN THE INSTANCE
 		// OF COUNTRY
@@ -117,15 +126,20 @@ public class MySQLCountryDAO implements CountryDAO {
 				// GET THE ATTRIBTUES
 				String code = rs.getString(1);
 				String continent = rs.getString(3);
-				//Continent continent = Continent.getContinent(rs.getString(3));
+				// Continent continent = Continent.getContinent(rs.getString(3));
 				float surfaceArea = rs.getFloat(4);
 				String headOfState = rs.getString(5);
+				
+				Country.CountryBuilder builder = new Country.CountryBuilder(code, name, continent, surfaceArea, headOfState);
+				Country newCountry = builder.build();
+				
+				countries.add(newCountry);
 
-				countries.add(new Country(code, name, continent, surfaceArea, headOfState));
+				//countries.add(new Country(code, name, continent, surfaceArea, headOfState));
 			}
 
 			// CLOSING THE CONNECTION TO THE DATABASE
-			db.closing();
+			//db.closing();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -156,9 +170,18 @@ public class MySQLCountryDAO implements CountryDAO {
 		boolean result = db.save(query);
 
 		// CLOSING THE DATABASE
-		db.closing();
+		//db.closing();
 
 		return result;
+	}
+
+	@Override
+	public void CloseDatabase() {
+		// TODO Auto-generated method stub
+		// CLOSING THE DATABASE
+		DataSource db = DataSource.getInstance();
+		db.closing();
+
 	}
 
 }
